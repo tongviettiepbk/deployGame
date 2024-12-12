@@ -1,13 +1,13 @@
 const express = require("express");
 const path = require("path");
 const TelegramBot = require("node-telegram-bot-api");
-const TOKEN = "";
+const TOKEN = "7651313413:AAFDXGSLrjskuJHMuKriQeeiHtP3koJwnnk";
 const server = express();
 const bot = new TelegramBot(TOKEN, {
     polling: true
 });
 const port = process.env.PORT || 5000;
-const gameName = "pira";
+const gameName = "Pira";
 const queries = {};
 server.use(express.static(path.join(__dirname, 'Pira')));
 bot.onText(/help/, (msg) => bot.sendMessage(msg.from.id, "Say /game if you want to play."));
