@@ -1,72 +1,76 @@
 <!DOCTYPE html>
 <html lang="en-us">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Unity Web Player | 2024_Piratopia</title>
-    <link rel="shortcut icon" href="TemplateData/favicon.ico">
-    <link rel="stylesheet" href="TemplateData/style.css">
-  </head>
-  <body>
-    <div id="unity-container" class="unity-desktop">
-      <canvas id="unity-canvas" tabindex="-1"></canvas>
-      <div id="unity-loading-bar">
-        <div id="unity-logo"></div>
-        <div id="unity-progress-bar-empty">
-          <div id="unity-progress-bar-full"></div>
-        </div>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>Unity Web Player | 2024_Piratopia</title>
+  <link rel="stylesheet" href="TemplateData/style.css?v=+1">
+</head>
+
+<body>
+  <div id="unity-container" class="unity-desktop">
+    <canvas id="unity-canvas" tabindex="-1"></canvas>
+    <div id="unity-loading-bar">
+      <div id="unity-logo"></div>
+      <div id="unity-progress-bar-empty">
+        <div id="unity-progress-bar-full"></div>
       </div>
     </div>
-    <script>
-      var canvas = document.querySelector("#unity-canvas");
+  </div>
+  <script>
+    var canvas = document.querySelector("#unity-canvas");
 
-      function adjustCanvasSize() {
-        const browserHeight = window.innerHeight;
-        const canvasHeight = browserHeight - 30; // Chiều cao browser trừ 30px
-        const canvasWidth = canvasHeight * (9 / 16); // Tỷ lệ 9:16
+    function adjustCanvasSize() {
+      const browserHeight = window.innerHeight;
+      const canvasHeight = browserHeight - 30; // Chiều cao browser trừ 30px
+      const canvasWidth = canvasHeight * (9 / 16); // Tỷ lệ 9:16
 
-        canvas.style.height = canvasHeight + "px";
-        canvas.style.width = canvasWidth + "px";
+      canvas.style.height = canvasHeight + "px";
+      canvas.style.width = canvasWidth + "px";
 
-        const container = document.querySelector("#unity-container");
-        container.style.height = canvasHeight + "px";
-        container.style.width = canvasWidth + "px";
-      }
+      const container = document.querySelector("#unity-container");
+      container.style.height = canvasHeight + "px";
+      container.style.width = canvasWidth + "px";
+    }
 
-      // Đặt kích thước canvas khi tải trang
-      adjustCanvasSize();
+    // Đặt kích thước canvas khi tải trang
+    adjustCanvasSize();
 
-      // Cập nhật kích thước canvas khi thay đổi kích thước cửa sổ
-      window.addEventListener("resize", adjustCanvasSize);
+    // Cập nhật kích thước canvas khi thay đổi kích thước cửa sổ
+    window.addEventListener("resize", adjustCanvasSize);
 
-      var buildUrl = "Build";
-      var loaderUrl = buildUrl + "/Pira.loader.js";
-      var config = {
-        arguments: [],
-        dataUrl: buildUrl + "/Pira.data",
-        frameworkUrl: buildUrl + "/Pira.framework.js",
-        codeUrl: buildUrl + "/Pira.wasm",
-        streamingAssetsUrl: "StreamingAssets",
-        companyName: "zone",
-        productName: "2024_Piratopia",
-        productVersion: "1.0",
-      };
+    var buildUrl = "Build";
+    var cacheBuster = "?v=" + 1; // Thêm tham số ngẫu nhiên để tránh cache
+    var loaderUrl = buildUrl + "/Pira.loader.js" + cacheBuster;
+    var config = {
+      arguments: [],
+      dataUrl: buildUrl + "/Pira.data" + cacheBuster,
+      frameworkUrl: buildUrl + "/Pira.framework.js" + cacheBuster,
+      codeUrl: buildUrl + "/Pira.wasm" + cacheBuster,
+      streamingAssetsUrl: "StreamingAssets",
+      companyName: "zone",
+      productName: "2024_Piratopia",
+      productVersion: "1.0",
+    };
 
-      document.querySelector("#unity-loading-bar").style.display = "block";
 
-      var script = document.createElement("script");
-      script.src = loaderUrl;
-      script.onload = () => {
-        createUnityInstance(canvas, config, (progress) => {
-          document.querySelector("#unity-progress-bar-full").style.width = 100 * progress + "%";
-        }).then((unityInstance) => {
-          document.querySelector("#unity-loading-bar").style.display = "none";
-        }).catch((message) => {
-          alert(message);
-        });
-      };
+    document.querySelector("#unity-loading-bar").style.display = "block";
 
-      document.body.appendChild(script);
-    </script>
-  </body>
+    var script = document.createElement("script");
+    script.src = loaderUrl;
+    script.onload = () => {
+      createUnityInstance(canvas, config, (progress) => {
+        document.querySelector("#unity-progress-bar-full").style.width = 100 * progress + "%";
+      }).then((unityInstance) => {
+        document.querySelector("#unity-loading-bar").style.display = "none";
+      }).catch((message) => {
+        alert(message);
+      });
+    };
+
+    document.body.appendChild(script);
+  </script>
+</body>
+
 </html>
